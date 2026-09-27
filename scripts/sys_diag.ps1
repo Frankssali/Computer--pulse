@@ -2,8 +2,7 @@
 # COMPUTER PULSE - SYSTEM DIAGNOSTIC AGENT (POWERSHELL)
 # ====================================================
 $LogFile = "data\system_init.log"
-Write-Host "[PROCESSING] Gathering system statistics..." -ForegroundColor
-Cyan
+Write-Host "[PROCESSING] Gathering system statistics..." -ForegroundColorCyan
 # INPUT: Query system information via native PowerShell CIM cmdlets
 $os = Get-CimInstance -ClassName Win32_OperatingSystem
 # PROCESSING: Convert memory metrics from Kilobytes to Megabytes
@@ -31,13 +30,9 @@ Total Memory : $totalRamMB MB
 Free Memory : $freeRamMB MB
 ====================================================
 "@
-
 # STORAGE: Ensure data folder exists and write log file
-if (-not (Text-path -path "data")){
-New-Item -ItemType Directory -Path "data" | out-Null
+if (-not (Test-Path -Path "data")) {
+ New-Item -ItemType Directory -Path "data" | Out-Null
 }
-
-$logcontent | out-file -Filepath $Logfile -Encoding utf8
-
-Write-Host "[SUCCESS] Diagnostic log saved to $Logfile" -ForegroundColor Green
-
+$logContent | Out-File -FilePath $LogFile -Encoding utf8
+Write-Host "[SUCCESS] Diagnostic log saved to $LogFile" -ForegroundColorGreen
